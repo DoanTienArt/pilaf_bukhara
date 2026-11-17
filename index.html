@@ -156,6 +156,80 @@
     .unit-txt { font-size: 13px; font-weight: 600; color: #64748b; width: 26px; }
     .prep-txt { font-size: 13px; color: #475569; }
 
+    /* Gantt Timeline Styles */
+    .gantt-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #334155;
+    }
+    .gantt-legend span {
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+    .gantt-header, .gantt-row {
+      display: grid;
+      grid-template-columns: 1.5fr 1.1fr 1.4fr 2.2fr 2fr;
+      align-items: start;
+      padding: 12px 20px;
+      border-bottom: 1px solid #e2e8f0;
+      gap: 10px;
+      font-size: 13px;
+    }
+    .gantt-header {
+      background: #f1f5f9;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #64748b;
+      align-items: center;
+    }
+    .gantt-row:hover { background: #f8fafc; }
+    .gantt-stream { font-weight: 700; color: #0f172a; }
+    .gantt-time {
+      font-family: monospace;
+      font-weight: 700;
+      font-size: 12px;
+      color: #2563eb;
+      background: #eff6ff;
+      padding: 3px 8px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+    .gantt-bar-wrap {
+      width: 100%;
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      margin-top: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+    .gantt-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      position: absolute;
+      top: 0;
+      background: #2563eb;
+    }
+    .gantt-heat { font-size: 12px; font-weight: 700; color: #0f172a; }
+    .gantt-lid { font-size: 11px; color: #475569; display: block; margin-top: 3px; font-weight: 600; }
+    .gantt-action { color: #334155; }
+    .gantt-cue { color: #0f766e; font-weight: 600; font-size: 12px; }
+
+    @media (max-width: 760px) {
+      .gantt-header { display: none; }
+      .gantt-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+        padding: 14px 16px;
+      }
+    }
+
     .section-box { padding: 20px; }
     .section-box h2 { font-size: 16px; font-weight: 800; margin-bottom: 14px; color: #0f172a; }
     .steps-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
@@ -176,7 +250,6 @@
     .step-cue { font-size: 12px; color: #0f766e; font-weight: 600; margin-top: 6px; }
     .step-warn { font-size: 12px; color: #b45309; font-weight: 600; margin-top: 4px; }
 
-    /* Notes Section */
     .notes-list { display: flex; flex-direction: column; gap: 10px; }
     .note-item {
       background: #fffbeb;
@@ -188,7 +261,6 @@
     }
     .note-item strong { color: #92400e; display: block; margin-bottom: 2px; font-size: 12px; text-transform: uppercase; }
 
-    /* Mobile Print Modal */
     .modal-backdrop {
       display: none;
       position: fixed;
@@ -250,7 +322,7 @@
 <div class="wrap">
   <div class="card header">
     <div>
-      <h1 id="uiTitle">Cơm Plov Bukhara Cung Đình (Oshi Sofi)</h1>
+      <h1 id="uiTitle">Cơm Plov Bukhara (Oshi Sofi)</h1>
     </div>
     <div class="controls-top no-print">
       <div class="lang-group">
@@ -264,14 +336,14 @@
   <div class="slider-panel">
     <div class="slider-top">
       <div>
-        <div class="slider-title" id="uiSliderTitle">Khối lượng gạo hạt tròn Uzbekistan (Nguyên liệu gốc)</div>
-        <div class="slider-desc" id="uiSliderDesc">Kéo thanh trượt để tự động nhân chia toàn bộ định lượng theo tỷ lệ chuẩn (1 kg gạo = 10 phần ăn)</div>
+        <div class="slider-title" id="uiSliderTitle">Khối lượng gạo (Nguyên liệu gốc)</div>
+        <div class="slider-desc" id="uiSliderDesc">Kéo thanh trượt để tự động nhân chia toàn bộ định lượng theo tỷ lệ chuẩn (Mốc gốc: 1.0 kg gạo)</div>
       </div>
       <div>
-        <span class="kg-display" id="kgDisplay">2.0</span><span class="kg-unit">kg</span>
+        <span class="kg-display" id="kgDisplay">1.0</span><span class="kg-unit">kg</span>
       </div>
     </div>
-    <input type="range" id="masterSlider" min="0.5" max="15.0" step="0.1" value="2.0">
+    <input type="range" id="masterSlider" min="0.5" max="15.0" step="0.1" value="1.0">
     <div class="presets no-print">
       <div class="preset-list" id="presetList"></div>
       <button class="reset-link" id="uiResetBtn" onclick="recalculateAll()">Đặt lại tỷ lệ gốc</button>
@@ -291,6 +363,30 @@
       <div class="col-prep" id="colPrep">Quy cách sơ chế & Kỹ thuật</div>
     </div>
     <div id="ingTableBody"></div>
+  </div>
+
+  <!-- Ma trận Tiến trình & Kiểm soát nhiệt (Gantt Timeline) -->
+  <div class="card">
+    <div class="table-head-bar">
+      <div>
+        <h2 id="uiGanttTitle">Ma trận tiến trình & Kiểm soát nhiệt (Gantt Timeline)</h2>
+      </div>
+      <div class="gantt-legend" id="ganttLegend">
+        <span>🔥🔥🔥 Lửa lớn</span>
+        <span>🔥🔥 Lửa vừa</span>
+        <span>🔥 Lửa nhỏ</span>
+        <span>🕯️ Lửa âm ỉ</span>
+        <span>❄️ Không nhiệt</span>
+      </div>
+    </div>
+    <div class="gantt-header">
+      <div id="gColStream">Luồng công việc</div>
+      <div id="gColTime">Mốc thời gian</div>
+      <div id="gColHeat">Mức lửa & Nắp vung</div>
+      <div id="gColAction">Thao tác kỹ thuật chính</div>
+      <div id="gColCue">Dấu hiệu cảm quan</div>
+    </div>
+    <div id="ganttTableBody"></div>
   </div>
 
   <div class="card section-box">
@@ -319,21 +415,30 @@
 
 <script>
   var lang = 'vi';
-  var baseKg = 2.0;
+  var baseKg = 1.0;
   var currentItems = [];
   var scrubIdx = null;
   var startY = 0;
   var startVal = 0;
 
   var UI_TEXT = {
-    title: { vi: 'Cơm Plov Bukhara Cung Đình (Oshi Sofi)', ru: 'Бухарский плов Оши-Софи (Диетический плов эмиров)' },
-    sliderTitle: { vi: 'Khối lượng gạo hạt tròn Uzbekistan (Nguyên liệu gốc)', ru: 'Вес круглого узбекского риса (Базовый продукт)' },
-    sliderDesc: { vi: 'Kéo thanh trượt để tự động nhân chia toàn bộ định lượng theo tỷ lệ chuẩn (1 kg gạo = 10 phần ăn)', ru: 'Перемещайте ползунок для пересчета всех компонентов (1 кг риса = 10 порций)' },
-    tableTitleMain: { vi: 'Bảng định lượng nguyên liệu ', ru: 'Bảng định lượng nguyên liệu ' },
+    title: { vi: 'Cơm Plov Bukhara (Oshi Sofi)', ru: 'Бухарский Плов (Оши-Софи)' },
+    sliderTitle: { vi: 'Khối lượng gạo (Nguyên liệu gốc)', ru: 'Вес риса (Базовый продукт)' },
+    sliderDesc: { vi: 'Kéo thanh trượt để tự động nhân chia toàn bộ định lượng theo tỷ lệ chuẩn (Mốc gốc: 1.0 kg gạo)', ru: 'Перемещайте ползунок для пересчета всех компонентов (База: 1.0 кг риса)' },
     tableTitleSub: { vi: '(Kéo chuột ở từng ô để thay đổi công thức tùy theo khẩu vị)', ru: '(Тяните числа в ячейках вверх/вниз для изменения рецепта по вкусу)' },
     colIng: { vi: 'Nguyên liệu', ru: 'Ингредиент' },
     colQty: { vi: 'Định lượng (Kéo ↕)', ru: 'Вес / Объем (↕)' },
     colPrep: { vi: 'Quy cách sơ chế & Kỹ thuật', ru: 'Обработка и нарезка' },
+    ganttTitle: { vi: 'Ma trận tiến trình & Kiểm soát nhiệt (Gantt Timeline)', ru: 'Матрица процесса и температурный контроль (Gantt)' },
+    ganttLegend: {
+      vi: ['🔥🔥🔥 Lửa lớn', '🔥🔥 Lửa vừa', '🔥 Lửa nhỏ', '🕯️ Lửa âm ỉ', '❄️ Không nhiệt'],
+      ru: ['🔥🔥🔥 Сильный огонь', '🔥🔥 Средний огонь', '🔥 Тихий огонь', '🕯️ Томление', '❄️ Без нагрева']
+    },
+    gColStream: { vi: 'Luồng công việc', ru: 'Рабочий поток' },
+    gColTime: { vi: 'Mốc thời gian', ru: 'Тайминг' },
+    gColHeat: { vi: 'Mức lửa & Nắp vung', ru: 'Огонь и крышка' },
+    gColAction: { vi: 'Thao tác kỹ thuật chính', ru: 'Технологическая операция' },
+    gColCue: { vi: 'Dấu hiệu cảm quan', ru: 'Признак готовности' },
     stepsTitle: { vi: 'Quy Trình Thực Hiện Chuẩn Hóa (4 Giai Đoạn)', ru: 'Пошаговая технология (4 этапа)' },
     notesTitle: { vi: 'Ghi chú & Lưu ý quan trọng', ru: 'Примечания и важные советы' },
     resetBtn: { vi: 'Đặt lại tỷ lệ gốc', ru: 'Сбросить ручные правки' },
@@ -342,120 +447,212 @@
   };
 
   var RECIPE = {
-    name: { vi: 'Cơm Plov Bukhara Cung Đình (Oshi Sofi)', ru: 'Бухарский плов Оши-Софи' },
+    name: { vi: 'Cơm Plov Bukhara (Oshi Sofi)', ru: 'Бухарский Плов (Оши-Софи)' },
     items: [
-      { group: { vi: 'Đạm chính', ru: 'Основной белок' }, name: { vi: 'Thịt đùi cừu / bò (chân sau)', ru: 'Мякоть баранины / говядины (задняя нога)' }, perKg: 1000, step: 50, dec: 0, unit: 'g', prep: { vi: 'Lọc sạch hạch bạch huyết dọc xương, chặt miếng tảng 350–400g', ru: 'Вырезать лимфоузлы вдоль кости; нарубить кусками по 350–400 г' } },
-      { group: { vi: 'Rau củ ngọt', ru: 'Овощная база' }, name: { vi: 'Cà rốt vàng Uzbekistan', ru: 'Морковь желтая узбекская' }, perKg: 750, step: 50, dec: 0, unit: 'g', prep: { vi: 'Gọt vỏ, thái sợi chỉ thật mỏng 2–3 mm dài 5–6 cm', ru: 'Очистить, нарезать тонкой соломкой 2–3 мм длиной 5–6 см' } },
-      { group: { vi: 'Rau củ ngọt', ru: 'Овощная база' }, name: { vi: 'Cà rốt đỏ', ru: 'Морковь красная' }, perKg: 250, step: 25, dec: 0, unit: 'g', prep: { vi: 'Thái sợi chỉ mỏng đồng đều 2–3 mm tạo màu sắc', ru: 'Нарезать тонкой соломкой 2–3 мм для визуального контраста' } },
-      { group: { vi: 'Hương nền', ru: 'Ароматная база' }, name: { vi: 'Hành tây trắng / vàng', ru: 'Репчатый лук' }, perKg: 300, step: 25, dec: 0, unit: 'g', prep: { vi: 'Bổ đôi, thái lát cực mỏng (1 mm) để tan biến trong nước dùng', ru: 'Нашинковать максимально тонкими полукольцами (1 мм)' } },
-      { group: { vi: 'Hương quả khô', ru: 'Сухофрукты' }, name: { vi: 'Nho khô đen tự nhiên (Kishmish)', ru: 'Изюм черный узбекский (Кишмиш)' }, perKg: 100, step: 10, dec: 0, unit: 'g', prep: { vi: 'Nhặt cuống, ngâm nước ấm 15 phút rồi vớt ráo', ru: 'Перебрать, замочить на 15 мин в теплой воде и откинуть' } },
-      { group: { vi: 'Nước dùng', ru: 'Бульонная основа' }, name: { vi: 'Nước luộc thịt cừu đậm đặc', ru: 'Насыщенный мясной бульон' }, perKg: 350, step: 25, dec: 0, unit: 'ml', prep: { vi: 'Múc trực tiếp từ nồi luộc thịt đang sôi rót vào Kazan', ru: 'Зачерпнуть из сотейника с мясом и влить в казан кипящим' } },
-      { group: { vi: 'Chất béo nung', ru: 'Масляный финиш' }, name: { vi: 'Dầu hướng dương tinh luyện', ru: 'Подсолнечное масло высшего сорта' }, perKg: 200, step: 10, dec: 0, unit: 'ml', prep: { vi: 'Rót vào chảo nung đến khi bốc khói trắng mỏng (180–200°C)', ru: 'Прокалить на сковороде до легкого белого дымка (180–200°C)' } },
-      { group: { vi: 'Chất béo linh hồn', ru: 'Масляный финиш' }, name: { vi: 'Dầu Zighir (hạt lanh & 7 loại hạt)', ru: 'Масло Зигир (Смесь 7 масел: лен, кунжут)' }, perKg: 75, step: 5, dec: 0, unit: 'ml', prep: { vi: 'Hòa cùng dầu hướng dương khi nung để dậy hương quả hạch', ru: 'Влить в смесь масел на этапе прокаливания для орехового вкуса' } },
-      { group: { vi: 'Bí quyết hoàng gia', ru: 'Секрет. ингредиент' }, name: { vi: 'Tủy xương cô đặc (Kostnoye maslo)', ru: 'Костное масло / вытопленный костный мозг' }, perKg: 15, step: 2, dec: 0, unit: 'g', prep: { vi: 'Thả vào chảo dầu đang sôi cho tan chảy hoàn toàn', ru: 'Растопить в кипящей масляной смеси перед поливкой' } },
-      { group: { vi: 'Bí quyết hoàng gia', ru: 'Секрет. ингредиент' }, name: { vi: 'Bơ ghee tinh khiết (Toplyonoye)', ru: 'Топленое масло (Гхи)' }, perKg: 15, step: 2, dec: 0, unit: 'g', prep: { vi: 'Thả cùng tủy xương vào chảo dầu nung trước khi rưới', ru: 'Добавить в раскаленное масло для сливочного аромата' } },
-      { group: { vi: 'Gia vị linh hồn', ru: 'Душа плова' }, name: { vi: 'Thì là Ai Cập núi đá (Zira)', ru: 'Зира горная узбекская (Кумин)' }, perKg: 15, step: 1, dec: 0, unit: 'g', prep: { vi: 'Nghiền thô bằng cối đá ngay trước khi rắc vào thịt và nồi', ru: 'Слегка растереть в каменной ступке перед внесением' } },
-      { group: { vi: 'Gia vị điều vị', ru: 'Приправа' }, name: { vi: 'Muối biển hạt vừa (không i-ốt)', ru: 'Соль морская / каменная (без йода)' }, perKg: 28, step: 2, dec: 0, unit: 'g', prep: { vi: 'Chia 3 đợt: luộc thịt, luộc gạo và rắc lớp cà rốt', ru: 'Вносится дробно: в бульон мяса, воду для риса и в казан' } },
-      { group: { vi: 'Gia vị thảo mộc', ru: 'Пряности' }, name: { vi: 'Tiêu đen xay tươi', ru: 'Черный перец свежемолотый' }, perKg: 2.5, step: 0.5, dec: 1, unit: 'g', prep: { vi: 'Rắc trực tiếp vào nước luộc thịt để khử mùi và làm ấm tỳ vị', ru: 'Добавить в бульон при варке мяса' } }
+      // Nhóm 1: Luộc thịt
+      { group: { vi: '1. Luộc thịt', ru: '1. Варить мясо' }, name: { vi: 'Thịt cừu nạc lọc sạch', ru: 'Баранина мякоть зачищенная' }, perKg: 1500, step: 50, dec: 0, unit: 'g', prep: { vi: 'Lọc sạch gân, màng và hạch; thả vào nước sôi hầm lửa nhỏ 90 phút', ru: 'Зачистить от пленок и лимфоузлов; положить в кипяток и варить 90 мин' } },
+      { group: { vi: '1. Luộc thịt', ru: '1. Варить мясо' }, name: { vi: 'Nước luộc thịt', ru: 'Вода для варки мяса' }, perKg: 1950, step: 50, dec: 0, unit: 'ml', prep: { vi: 'Đun sôi bùng trước khi thả thịt, hớt sạch bọt', ru: 'Довести до кипения перед закладкой мяса, снять пену' } },
+      { group: { vi: '1. Luộc thịt', ru: '1. Варить мясо' }, name: { vi: 'Hành tây (luộc thịt)', ru: 'Лук (для варки мяса)' }, perKg: 360, step: 20, dec: 0, unit: 'g', prep: { vi: 'Cho vào nồi luộc thịt cùng các gia vị sau khi hớt bọt', ru: 'Добавить в бульон вместе с приправами после снятия пены' } },
+      { group: { vi: '1. Luộc thịt', ru: '1. Варить мясо' }, name: { vi: 'Muối (luộc thịt)', ru: 'Соль (для варки мяса)' }, perKg: 30, step: 2, dec: 0, unit: 'g', prep: { vi: 'Nêm trực tiếp vào nồi luộc thịt', ru: 'Добавить при варке мяса' } },
+      { group: { vi: '1. Luộc thịt', ru: '1. Варить мясо' }, name: { vi: 'Tiêu đen nguyên hạt', ru: 'Черный перец горошек' }, perKg: 3, step: 0.5, dec: 1, unit: 'g', prep: { vi: 'Cho nguyên hạt vào nồi nước luộc thịt', ru: 'Добавить горошком в бульон' } },
+      { group: { vi: '1. Luộc thịt', ru: '1. Варить мясо' }, name: { vi: 'Thì là (luộc thịt)', ru: 'Зира (для варки мяса)' }, perKg: 2, step: 0.5, dec: 1, unit: 'g', prep: { vi: 'Cho vào nồi hầm cùng thịt', ru: 'Добавить в бульон при варке мяса' } },
+      { group: { vi: '1. Luộc thịt', ru: '1. Варить мясо' }, name: { vi: 'Hạt mùi (Coriander)', ru: 'Кориандр' }, perKg: 2, step: 0.5, dec: 1, unit: 'g', prep: { vi: 'Cho vào nồi hầm cùng thịt', ru: 'Добавить в бульон при варке мяса' } },
+      { group: { vi: '1. Luộc thịt', ru: '1. Варить мясо' }, name: { vi: 'Lá nguyệt quế', ru: 'Лавровый лист' }, perKg: 1, step: 0.5, dec: 1, unit: 'g', prep: { vi: 'Thả vào nồi luộc thịt tạo hương nền thanh', ru: 'Добавить в бульон для аромата' } },
+
+      // Nhóm 2: Luộc gạo
+      { group: { vi: '2. Luộc gạo', ru: '2. Варить рис' }, name: { vi: 'Nước luộc gạo', ru: 'Вода для варки риса' }, perKg: 3000, step: 100, dec: 0, unit: 'ml', prep: { vi: 'Gạo vo sạch 2 lần; thả gạo và muối vào nước sôi luộc ĐÚNG 4 phút', ru: 'Рис промыть 2 раза; варить в кипящей воде с солью РОВНО 4 минуты' } },
+      { group: { vi: '2. Luộc gạo', ru: '2. Варить рис' }, name: { vi: 'Muối (luộc gạo)', ru: 'Соль (для варки риса)' }, perKg: 45, step: 5, dec: 0, unit: 'g', prep: { vi: 'Hòa vào nước sôi khi luộc gạo 4 phút', ru: 'Добавить в кипящую воду при варке риса' } },
+      { group: { vi: '2. Luộc gạo', ru: '2. Варить рис' }, name: { vi: 'Thì là (trộn gạo)', ru: 'Зира (смешать с рисом)' }, perKg: 15, step: 1, dec: 0, unit: 'g', prep: { vi: 'Trộn đều trực tiếp vào gạo sau khi vớt ra và xả nước mát', ru: 'Смешать с рисом после промывания прохладной водой' } },
+
+      // Nhóm 3: Nguyên liệu phụ
+      { group: { vi: '3. Nguyên liệu phụ', ru: '3. Прочие ингредиенты' }, name: { vi: 'Cà rốt vàng', ru: 'Морковь желтая' }, perKg: 1000, step: 50, dec: 0, unit: 'g', prep: { vi: 'Thái sợi dài mỏng đều (тонкие длинные брусочки)', ru: 'Нарезать тонкими длинными брусочками' } },
+      { group: { vi: '3. Nguyên liệu phụ', ru: '3. Прочие ингредиенты' }, name: { vi: 'Cà rốt đỏ', ru: 'Морковь красная' }, perKg: 200, step: 25, dec: 0, unit: 'g', prep: { vi: 'Thái sợi dài mỏng trộn cùng cà rốt vàng xếp tầng', ru: 'Нарезать тонкими длинными брусочками' } },
+      { group: { vi: '3. Nguyên liệu phụ', ru: '3. Прочие ингредиенты' }, name: { vi: 'Nho khô (Kishmish)', ru: 'Изюм' }, perKg: 70, step: 10, dec: 0, unit: 'g', prep: { vi: 'Rửa sạch bằng nước ấm, để ráo', ru: 'Промыть теплой водой' } },
+      { group: { vi: '3. Nguyên liệu phụ', ru: '3. Прочие ингредиенты' }, name: { vi: 'Đậu gà (Chickpeas)', ru: 'Нут' }, perKg: 70, step: 10, dec: 0, unit: 'g', prep: { vi: 'Ngâm qua đêm 9–10 tiếng, luộc 5 phút với 5g muối + 5g đường', ru: 'Замочить на 9–10 часов, варить 5 мин (добавить 5 г соли и 5 г сахара)' } },
+      { group: { vi: '3. Nguyên liệu phụ', ru: '3. Прочие ингредиенты' }, name: { vi: 'Nước luộc thịt giữ lại', ru: 'Бульон из-под варки мяса' }, perKg: 750, step: 25, dec: 0, unit: 'ml', prep: { vi: 'Lọc qua rây từ nồi luộc thịt ở bước 1 để rót vào Kazan', ru: 'Процедить бульон из пункта 1 для доливки в казан' } },
+      { group: { vi: '3. Nguyên liệu phụ', ru: '3. Прочие ингредиенты' }, name: { vi: 'Muối nêm cho gạo (trong Kazan)', ru: 'Соль для риса (в казан)' }, perKg: 23, step: 2, dec: 0, unit: 'g', prep: { vi: 'Rắc lên lớp gạo khi cho gạo vào nồi Kazan ở bước 5', ru: 'Добавить поверх риса при закладке в казан' } },
+      { group: { vi: '3. Nguyên liệu phụ', ru: '3. Прочие ингредиенты' }, name: { vi: 'Nhụy hoa nghệ tây (tùy chọn)', ru: 'Шафран (необязательный)' }, perKg: 0.5, step: 0.1, dec: 1, unit: 'g', prep: { vi: 'Đun sôi 10 giây trong 30 ml nước, rưới lên gạo cùng muối', ru: 'Кипятить 10 сек в 30 мл воды, полить рис в казане' } },
+
+      // Nhóm 4: Chuẩn bị dầu mỡ
+      { group: { vi: '4. Hỗn hợp dầu mỡ', ru: '4. Подготовка масла' }, name: { vi: 'Mỡ đuôi cừu (Kurdyuk)', ru: 'Курдюк бараний' }, perKg: 70, step: 10, dec: 0, unit: 'g', prep: { vi: 'Rán chảy lấy mỡ, vớt bỏ xác tóp mỡ (вынуть шкварки)', ru: 'Растопить, вынуть шкварки перед добавлением масел' } },
+      { group: { vi: '4. Hỗn hợp dầu mỡ', ru: '4. Подготовка масла' }, name: { vi: 'Dầu thực vật', ru: 'Масло растительное' }, perKg: 100, step: 10, dec: 0, unit: 'ml', prep: { vi: 'Đổ vào mỡ cừu đã vớt tóp, đun nóng đạt 220–230°C', ru: 'Добавить к вытопленному курдюку, довести до 220–230°C' } },
+      { group: { vi: '4. Hỗn hợp dầu mỡ', ru: '4. Подготовка масла' }, name: { vi: 'Dầu Zighir', ru: 'Масло Зигир' }, perKg: 110, step: 10, dec: 0, unit: 'ml', prep: { vi: 'Hòa cùng dầu thực vật và dầu mè để nung nóng 220–230°C', ru: 'Смешать с растительным и кунжутным маслом' } },
+      { group: { vi: '4. Hỗn hợp dầu mỡ', ru: '4. Подготовка масла' }, name: { vi: 'Dầu mè', ru: 'Масло кунжутное' }, perKg: 50, step: 5, dec: 0, unit: 'ml', prep: { vi: 'Hòa chung chảo dầu nung tạo hương thơm đặc trưng', ru: 'Добавить в масляную смесь при прокаливании' } },
+      { group: { vi: '4. Hỗn hợp dầu mỡ', ru: '4. Подготовка масла' }, name: { vi: 'Cà rốt và hành tây cắt lát (khử dầu)', ru: 'Морковь и лук порезанные (для масла)' }, perKg: 30, step: 5, dec: 0, unit: 'g', prep: { vi: 'Phi cháy màu nâu đậm trong hỗn hợp dầu rồi vớt bỏ xác', ru: 'Обжарить в масле до коричневого цвета и вынуть' } },
+      { group: { vi: '4. Hỗn hợp dầu mỡ', ru: '4. Подготовка масла' }, name: { vi: 'Bơ đun chảy (Ghee)', ru: 'Масло топленое сливочное' }, perKg: 40, step: 5, dec: 0, unit: 'g', prep: { vi: 'Cho trực tiếp lên mặt cơm SAU KHI dội dầu nóng (không nung chung)', ru: 'Добавить на рис ПОСЛЕ поливки горячим маслом' } }
+    ],
+    gantt: [
+      {
+        stream: { vi: 'Chuẩn bị trước (Hôm trước)', ru: 'Заготовка (Накануне)' },
+        time: { vi: '9 – 10 giờ trước', ru: 'За 9 – 10 ч' },
+        heat: { vi: '❄️ Không nhiệt', ru: '❄️ Без нагрева' },
+        lid: { vi: 'Ngâm đậu gà nước nguội', ru: 'Замачивание нута' },
+        barLeft: 0, barWidth: 15,
+        action: { vi: 'Ngâm đậu gà trong nước sạch 9–10 tiếng cho nở mềm trước khi luộc.', ru: 'Замочить нут в холодной воде на 9–10 часов.' },
+        cue: { vi: 'Hạt đậu nở to gấp đôi, căng mọng.', ru: 'Зерна нута увеличились вдвое.' }
+      },
+      {
+        stream: { vi: 'Bếp phụ 1: Hầm thịt', ru: 'Плита 1: Варка мяса' },
+        time: { vi: 'Phút 00 – 90', ru: '00 – 90 мин' },
+        heat: { vi: '🔥🔥🔥 Lửa lớn -> 🔥 Lửa nhỏ', ru: '🔥🔥🔥 Сильный -> 🔥 Тихий' },
+        lid: { vi: '🍲 Mở hớt bọt -> 🥘 Đậy vung', ru: '🍲 Снять пену -> 🥘 Под крышкой' },
+        barLeft: 5, barWidth: 45,
+        action: { vi: 'Thả thịt vào nước sôi, hớt bọt, thêm hành tây, muối, tiêu hạt, lá nguyệt quế, thì là, hạt mùi. Hầm lửa nhỏ 90 phút, vớt thịt và lọc nước dùng.', ru: 'Опустить мясо в кипяток, снять пену, добавить все приправы и варить на тихом огне 90 мин. Достать мясо, процедить бульон.' },
+        cue: { vi: 'Thịt mềm rục, nước dùng lọc trong veo.', ru: 'Мясо мягкое, бульон прозрачный.' }
+      },
+      {
+        stream: { vi: 'Bàn sơ chế & Bếp phụ 2', ru: 'Стол и Плита 2 (Овощи)' },
+        time: { vi: 'Phút 60 – 90', ru: '60 – 90 мин' },
+        heat: { vi: '🔥🔥 Lửa vừa (Đậu & Nghệ tây)', ru: '🔥🔥 Средний огонь' },
+        lid: { vi: '🍲 Mở vung', ru: '🍲 Без крышки' },
+        barLeft: 32, barWidth: 18,
+        action: { vi: 'Thái sợi dài cà rốt vàng/đỏ; rửa nho khô nước ấm; luộc đậu gà 5 phút với 5g muối + 5g đường; đun nghệ tây 10 giây với 30ml nước.', ru: 'Нарезать морковь тонкой длинной соломкой; промыть изюм; варить нут 5 мин (5 г соли + 5 г сахара); шафран кипятить 10 сек.' },
+        cue: { vi: 'Sợi cà rốt đều mảnh, đậu gà chín mềm.', ru: 'Морковь ровная, нут готов.' }
+      },
+      {
+        stream: { vi: 'Bếp chính: Xếp tầng & Hầm', ru: 'Казан: Слои и томление' },
+        time: { vi: 'Phút 90 – 120', ru: '90 – 120 мин' },
+        heat: { vi: '🔥🔥🔥 Lửa lớn -> 🔥 Lửa nhỏ', ru: '🔥🔥🔥 Сильный -> 🔥 Тихий' },
+        lid: { vi: '🥘 Đậy kín (hơi tản nhẹ)', ru: '🥘 Закрытая крышка (пар вьется)' },
+        barLeft: 50, barWidth: 20,
+        action: { vi: 'Xếp 6 tầng vào Kazan (cà rốt đáy - thịt - cà rốt - đậu gà & nho khô - cà rốt trên), đổ 750ml nước dùng sôi, đậy vung hạ lửa sao cho hơi tản nhẹ lượn lờ trong 30 phút.', ru: 'Закладка слоями в казан, долив бульона, довести до кипения, закрыть крышку и убавить огонь (пар НЕ прямой струей, а вился) на 30 мин.' },
+        cue: { vi: 'Hơi thoát tản nhẹ không phun tia thẳng.', ru: 'Пар под крышкой слегка вьется.' }
+      },
+      {
+        stream: { vi: 'Bếp phụ 3: Luộc gạo', ru: 'Плита 3: Варка риса' },
+        time: { vi: 'Phút 112 – 120', ru: '112 – 120 мин' },
+        heat: { vi: '🔥🔥🔥 Lửa lớn sôi bùng', ru: '🔥🔥🔥 Сильный огонь' },
+        lid: { vi: '🍲 Mở vung hoàn toàn', ru: '🍲 Без крышки' },
+        barLeft: 64, barWidth: 8,
+        action: { vi: 'Vo gạo 2 lần, thả gạo và 45g muối vào nước sôi luộc ĐÚNG 4 phút sau khi sôi lại, vớt ra dội nước mát và trộn đều 15g thì là.', ru: 'Промыть рис 2 раза, варить в кипящей воде с солью РОВНО 4 минуты после кипения, облить прохладной водой и смешать с 15 г зиры.' },
+        cue: { vi: 'Hạt gạo săn chắc, nguội tơi, thơm thì là.', ru: 'Зерна упругие, аромат зиры.' }
+      },
+      {
+        stream: { vi: 'Bếp chính: Hấp gạo', ru: 'Казан: Томление риса' },
+        time: { vi: 'Phút 120 – 140', ru: '120 – 140 мин' },
+        heat: { vi: '🔥🔥🔥 Lửa lớn -> 🕯️ Lửa âm ỉ', ru: '🔥🔥🔥 Сильный -> 🕯️ Томление' },
+        lid: { vi: '🥘 Đậy kín (thỉnh thoảng thoát hơi)', ru: '🥘 Закрытая крышка (редкий пар)' },
+        barLeft: 70, barWidth: 16,
+        action: { vi: 'Trải gạo lên mặt cà rốt, rắc 23g muối cho gạo, rưới nghệ tây, dùi lỗ thông hơi. Đậy vung bật lửa lớn cho bốc hơi, sau đó hạ lửa sao cho hơi chỉ thỉnh thoảng thoát dưới nắp trong 20 phút.', ru: 'Выложить рис, добавить соль, шафран, сделать дырки. Закрыть крышку, довести до пара и убавить огонь (пар иногда выходит из-под крышки) на 20 мин.' },
+        cue: { vi: 'Hạt cơm chín dẻo đều, ráo mặt.', ru: 'Рис пропарился, зерна целые.' }
+      },
+      {
+        stream: { vi: 'Chảo phụ: Nung dầu 230°C', ru: 'Сковорода: Прокаливание масла' },
+        time: { vi: 'Phút 133 – 140', ru: '133 – 140 мин' },
+        heat: { vi: '🔥🔥🔥 Lửa lớn (220–230°C)', ru: '🔥🔥🔥 Сильный (220–230°C)' },
+        lid: { vi: '🍲 Không đậy nắp', ru: '🍲 Без крышки' },
+        barLeft: 80, barWidth: 7,
+        action: { vi: 'Rán chảy mỡ đuôi cừu, vớt tóp mỡ, đổ 3 loại dầu vào. Phi cháy nâu 30g cà rốt + hành tây rồi vớt bỏ xác, đun dầu đạt 220–230°C.', ru: 'Растопить курдюк, вынуть шкварки, добавить масла. Обжарить морковь и лук до коричневого цвета, вынуть, довести до 220–230°C.' },
+        cue: { vi: 'Dầu sôi già bốc khói nhẹ đạt 220–230°C.', ru: 'Масло раскалено до 220–230°C.' }
+      },
+      {
+        stream: { vi: 'Bếp chính: Chốt dầu & Ủ', ru: 'Казан: Финиш и упревание' },
+        time: { vi: 'Phút 140 – 150', ru: '140 – 150 мин' },
+        heat: { vi: '❄️ Tắt bếp & Ủ kín', ru: '❄️ Без нагрева (Выкл.)' },
+        lid: { vi: '🥘 Đậy kín vung 10 phút', ru: '🥘 Закрытая крышка 10 мин' },
+        barLeft: 86, barWidth: 14,
+        action: { vi: 'Rưới dầu 230°C khắp mặt gạo, thêm 40g bơ đun chảy, đảo tơi nhẹ lớp gạo trên, đậy vung tắt bếp ủ thêm 10 phút.', ru: 'Облить рис горячим маслом, добавить топленое масло, смешать и разрыхлить слой риса, закрыть крышку, выключить огонь и держать 10 мин.' },
+        cue: { vi: 'Hạt cơm bóng mượt, thơm ngậy bơ & dầu.', ru: 'Рис рассыпчатый, глянцевый.' }
+      }
     ],
     steps: [
       {
-        title: { vi: 'Giai đoạn 1: Sơ chế & Luộc sơ thịt và gạo', ru: 'Этап 1: Зачистка и предварительное отваривание' },
+        title: { vi: 'Giai đoạn 1: Hầm thịt 90 phút & Sơ chế nguyên liệu phụ', ru: 'Этап 1: Варка мяса (90 мин) и подготовка овощей' },
         badges: {
-          vi: ['🔥🔥🔥 Lửa lớn', '⏱️ 25 phút', '🍲 Mở vung'],
-          ru: ['🔥🔥🔥 Сильный огонь', '⏱️ 25 мин', '🍲 Без крышки']
+          vi: ['🔥🔥🔥 Lửa lớn -> 🔥 Lửa nhỏ', '⏱️ 90 phút', '🥘 Đậy vung'],
+          ru: ['🔥🔥🔥 Сильный -> 🔥 Тихий', '⏱️ 90 мин', '🥘 Под крышкой']
         },
         desc: {
-          vi: 'Rạch dọc xương đùi cừu bóc sạch toàn bộ hạch bạch huyết, chặt tảng 350–400g. Đun sôi bùng nồi nước, thả thịt trực tiếp vào nước đang sôi để khóa protein, hớt bọt, nêm hành tây lát mỏng, muối, tiêu, Zira và liên tục múc nước rót từ trên cao xuống để nạp oxy trong 20–25 phút. Ở nồi khác, luộc gạo trong túi vải thưa với nước muối sôi trong 7–9 phút rồi vớt ra giá gỗ cho róc nước.',
-          ru: 'Вырезать лимфоузлы вдоль кости, нарубить мясо кусками 350–400 г. Опустить мясо строго в кипящую воду (запечатывание соков), снять пену, добавить лук, соль, перец, зиру и непрерывно переливать бульон струей с высоты для насыщения кислородом (20–25 мин). Отдельно отварить рис в холщовом мешке в подсоленной кипящей воде 7–9 мин и откинуть на деревянную решетку.'
+          vi: 'Thả thịt cừu đã lọc sạch vào nước đang sôi bùng, chờ sôi lại thì hớt sạch bọt. Cho toàn bộ gia vị nhóm 1 (hành tây, muối, tiêu hạt, lá nguyệt quế, thì là, hạt mùi) vào hầm lửa nhỏ 90 phút. Vớt thịt ra, lọc trong nước dùng qua rây giữ lại 750ml/kg gạo. Song song: thái sợi dài cà rốt vàng và đỏ; rửa nho khô nước ấm; đậu gà ngâm 9–10 tiếng đem luộc 5 phút với 5g muối + 5g đường; nghệ tây đun sôi 10 giây với 30ml nước.',
+          ru: 'Положить зачищенное мясо в кипяток, дать закипеть, снять пену, добавить все приправы (лук, соль, перец горошком, лавровый лист, зиру, кориандр) и варить на тихом огне 90 минут. Достать мясо, процедить бульон. Параллельно: нарезать морковь тонкой длинной соломкой; промыть изюм; нут (замоченный на 9–10 ч) варить 5 мин с 5 г соли и 5 г сахара; шафран кипятить 10 сек в 30 мл воды.'
         },
         cue: {
-          vi: '👁️ Dấu hiệu: Nước dùng trong veo óng mỡ vàng; thịt và gạo đều đạt độ chín dở 45–50% (lõi gạo còn gân cứng).',
-          ru: '👁️ Признак: Прозрачный золотистый бульон; мясо и рис доведены до полуготовности на 45–50%.'
+          vi: '👁️ Dấu hiệu: Thịt cừu chín mềm hoàn toàn; nước dùng lọc xong trong veo không cặn.',
+          ru: '👁️ Признак: Мясо полностью мягкое; процеженный бульон чистый и прозрачный.'
         },
         warn: {
-          vi: '⚠️ Lưu ý: Tuyệt đối không thả thịt vào nước lạnh (sẽ làm tiết hết chất ngọt và ra nhiều bọt bẩn).',
-          ru: '⚠️ Важно: Категорически нельзя закладывать мясо в холодную воду.'
+          vi: '⚠️ Lưu ý: Bước hầm thịt này hoàn toàn có thể chuẩn bị trước từ hôm trước.',
+          ru: '⚠️ Важно: Пункт 1 (варку мяса) можно выполнить заранее за день до подачи.'
         }
       },
       {
-        title: { vi: 'Giai đoạn 2: Xếp tầng & Kích hơi trong Kazan', ru: 'Этап 2: Закладка слоями в казан и запуск пара' },
+        title: { vi: 'Giai đoạn 2: Xếp 6 tầng vào Kazan & Hầm hơi 30 phút', ru: 'Этап 2: Закладка слоями в казан и томление (30 мин)' },
         badges: {
-          vi: ['🔥🔥🔥 Lửa lớn -> 🔥🔥 Lửa vừa', '⏱️ 10 phút', '🍲 Mở vung'],
-          ru: ['🔥🔥🔥 Сильный -> 🔥🔥 Средний', '⏱️ 10 мин', '🍲 Без крышки']
+          vi: ['🔥🔥🔥 Lửa lớn -> 🔥 Lửa nhỏ', '⏱️ 30 phút', '🥘 Đậy kín vung'],
+          ru: ['🔥🔥🔥 Сильный -> 🔥 Тихий огонь', '⏱️ 30 мин', '🥘 Закрытая крышка']
         },
         desc: {
-          vi: 'Lót 1 lớp cà rốt mỏng xuống đáy nồi Kazan sạch khô. Xếp toàn bộ thịt cừu lên trên, rắc hành tây thái mỏng, muối và Zira giã. Phủ kín toàn bộ cà rốt vàng/đỏ thái sợi lên trên, rải nho khô đen Kishmish đã ngâm nở. Múc nước luộc thịt đang sôi nóng rót vào nồi và bật lửa lớn để đẩy hơi tinh chất bốc ngược lên.',
-          ru: 'На дно чистого сухого казана выложить тонкий слой моркови, сверху уложить мясо, посыпать тонким луком, солью и зирой. Укрыть всей оставшейся желтой и красной морковью, распределить изюм. Влить кипящий мясной бульон и включить сильный огонь.'
+          vi: 'Xếp nguyên liệu vào nồi Kazan theo đúng thứ tự 6 tầng: (1) Lớp cà rốt mỏng lót đáy -> (2) Thịt cừu -> (3) Lớp cà rốt -> (4) Đậu gà và nho khô -> (5) Lớp cà rốt phủ kín mặt. Rót nước luộc thịt đã lọc vào, bật lửa lớn đun sôi bùng. Sau đó đậy kín vung, hạ lửa nhỏ sao cho hơi bốc lên tản nhẹ lượn lờ chứ KHÔNG phun thành tia thẳng trong 30 phút.',
+          ru: 'Закладка в казан строго по слоям: тонкий слой морковки — мясо — морковка — нут и изюм — верхний слой морковки. Долить процеженный бульон и на сильном огне довести до полного кипения. Закрыть крышку и уменьшить огонь так, чтобы пар выходил НЕ прямой струей, а только слегка вился, на 30 минут.'
         },
         cue: {
-          vi: '👁️ Dấu hiệu: Nước cốt dưới đáy sôi sùng sục, hơi nóng mang hương thịt và Zira cuộn bốc mạnh qua lớp cà rốt.',
-          ru: '👁️ Признак: Бурное кипение бульона на дне и интенсивный ароматный пар сквозь слой моркови.'
+          vi: '👁️ Dấu hiệu: Hơi thoát dưới nắp vung tản nhẹ lượn lờ đều đặn suốt 30 phút, rau thịt ngấm sâu nước cốt.',
+          ru: '👁️ Признак: Пар под крышкой лишь слегка вьется, морковь и нут пропитались бульоном.'
         },
         warn: {
-          vi: '⚠️ Lưu ý: Không đảo trộn các nguyên liệu; Oshi Sofi là món Plov hấp chín phân tầng.',
-          ru: '⚠️ Важно: Не перемешивать слои; Оши-Софи готовится строго слоями на пару.'
+          vi: '⚠️ Lưu ý: Tuyệt đối không để lửa quá lớn làm hơi phun thẳng mạnh gây cạn cháy đáy nồi.',
+          ru: '⚠️ Важно: Не допускать сильного выхода пара прямой струей.'
         }
       },
       {
-        title: { vi: 'Giai đoạn 3: Vào gạo, chải xới & Rưới dầu nung', ru: 'Этап 3: Закладка риса, «расчесывание» и заливка маслом' },
+        title: { vi: 'Giai đoạn 3: Luộc gạo đúng 4 phút & Hấp gạo 20 phút', ru: 'Этап 3: Варка риса (4 мин) и томление в казане (20 мин)' },
         badges: {
-          vi: ['🔥🔥 Lửa vừa (Chảo dầu: 🔥🔥🔥)', '⏱️ 15 phút', '🍲 Mở vung'],
-          ru: ['🔥🔥 Средний (Масло: 🔥🔥🔥)', '⏱️ 15 мин', '🍲 Без крышки']
+          vi: ['🔥🔥🔥 Lửa lớn -> 🕯️ Lửa âm ỉ', '⏱️ 4 phút + 20 phút', '🥘 Đậy kín vung'],
+          ru: ['🔥🔥🔥 Сильный -> 🕯️ Томление', '⏱️ 4 мин + 20 мин', '🥘 Закрытая крышка']
         },
         desc: {
-          vi: 'Trút toàn bộ gạo đã róc nước lên trên lớp cà rốt, vuốt phẳng mặt. Dùng muôi Kaptgir chải xới nhẹ lớp gạo bề mặt từ rìa vào giữa cho tơi xốp. Đồng thời, đun sôi dầu hướng dương, dầu Zighir, tủy xương và bơ ghee trên chảo phụ đến khi bốc khói trắng mỏng (180–190°C) rồi rưới đều khắp mặt gạo.',
-          ru: 'Выложить стекший рис поверх моркови, разровнять. Аккуратно «расчесывать» верхний слой риса шумовкой от краев к центру. Параллельно прокалить на сковороде подсолнечное масло, зигир, костное масло и гхи до легкого дымка (180–190°C) и равномерно полить рис.'
+          vi: 'Vo gạo 2 lần. Đun sôi bùng nước luộc gạo, thả gạo và muối vào luộc CHÍNH XÁC 4 phút tính từ lúc nước sôi lại, vớt ra dội ngay qua nước mát hãm chín rồi trộn đều 15g thì là vào gạo. Trải gạo lên mặt cà rốt trong Kazan, rắc 23g muối cho gạo, rưới nước nghệ tây và dùi lỗ thông hơi. Đậy vung bật lửa lớn cho bốc hơi, rồi hạ lửa âm ỉ sao cho hơi chỉ thỉnh thoảng thoát nhẹ dưới nắp vung trong 20 phút.',
+          ru: 'Промыть рис 2 раза. Заложить рис и соль в кипящую воду, варить РОВНО 4 минуты после закипания, вынуть, облить прохладной водой и смешать с 15 г зиры. Выложить рис в казан, добавить соль для риса и шафран, сделать дырки. Закрыть крышку, на сильном огне довести до пара и убавить огонь так, чтобы пар иногда выходил из-под крышки, на 20 минут.'
         },
         cue: {
-          vi: '👁️ Dấu hiệu: Dầu sôi gặp gạo phát tiếng rít xèo xèo giòn tan, từng hạt gạo se bóng rực rỡ và dậy mùi hạt quả hạch.',
-          ru: '👁️ Признак: Громкое шипение при поливке, зерна покрываются глянцевой масляной глазурью.'
+          vi: '👁️ Dấu hiệu: Hạt gạo nở đều, săn chắc không nát, dậy mùi thơm đặc trưng của thì là và nghệ tây.',
+          ru: '👁️ Признак: Рис пропарился, зерна целые и упругие, аромат зиры и шафрана.'
         },
         warn: {
-          vi: '⚠️ Lưu ý: Khi chải xới gạo tuyệt đối không để muôi chạm sâu xuống lớp cà rốt và thịt bên dưới.',
-          ru: '⚠️ Важно: При «расчесывании» риса не задевать шумовкой нижние слои моркови и мяса.'
+          vi: '⚠️ Lưu ý: Canh chuẩn xác mốc 4 phút khi luộc gạo và xả nước mát ngay lập tức.',
+          ru: '⚠️ Важно: Строго соблюдать время варки риса — ровно 4 минуты.'
         }
       },
       {
-        title: { vi: 'Giai đoạn 4: Ủ chín hơi Đom & Trình bày phân tầng', ru: 'Этап 4: Томление под крышкой (Дам) и подача' },
+        title: { vi: 'Giai đoạn 4: Nung dầu 220–230°C, thêm bơ & Ủ tắt bếp 10 phút', ru: 'Этап 4: Заливка раскаленным маслом (220–230°C) и упревание' },
         badges: {
-          vi: ['🕯️ Lửa âm ỉ (nhỏ nhất)', '⏱️ 30 – 35 phút', '🥘 Đậy kín vung'],
-          ru: ['🕯️ Минимальный огонь', '⏱️ 30 – 35 мин', '🥘 Герметичная крышка']
+          vi: ['🔥🔥🔥 Lửa lớn -> ❄️ Không nhiệt', '⏱️ 10 phút', '🥘 Đậy kín vung'],
+          ru: ['🔥🔥🔥 Сильный -> ❄️ Без нагрева', '⏱️ 10 мин', '🥘 Закрытая крышка']
         },
         desc: {
-          vi: 'Vun gạo thành hình mai rùa gọn vào tâm nồi, dùi 5–6 lỗ thông hơi xuống đáy. Đậy vung Kazan thật kín, hạ lửa nhỏ nhất ủ trong 30–35 phút. Khi mở vung, gạt lớp cơm ra đĩa lớn (Lyagan), phủ lớp cà rốt nho khô lên trên, thái lát thịt cừu xếp lên đỉnh và rưới nước cốt đáy nồi.',
-          ru: 'Собрать рис горкой, сделать несколько отверстий до дна. Плотно закрыть крышкой и томить на минимальном огне 30–35 минут. При подаче выложить на ляган слоями: сначала рис, сверху сладкую морковь с изюмом, на вершину — нарезанное ломтиками мясо.'
+          vi: 'Rán chảy 70g mỡ đuôi cừu, vớt bỏ hết tóp mỡ. Đổ dầu thực vật, dầu Zighir và dầu mè vào chảo. Thả 30g cà rốt hành tây cắt lát vào phi cháy nâu đậm rồi vớt bỏ xác, tiếp tục đun dầu đạt 220–230°C. Rưới đều dầu đang sôi già khắp mặt gạo trong Kazan, sau đó đặt 40g bơ đun chảy lên trên. Đảo tơi nhẹ lớp gạo bề mặt, đậy kín vung, TẮT BẾP và ủ thêm 10 phút trước khi bày ra đĩa.',
+          ru: 'Курдюк растопить, вынуть шкварки, влить растительное, зигирное и кунжутное масло. Обжарить 30 г моркови и лука до коричневого цвета, вынуть и довести масло до 220–230°C. Равномерно облить кипящим маслом поверхность риса, добавить топленое сливочное масло. Смешать и разрыхлить слой риса, закрыть крышку, выключить огонь и держать еще 10 минут.'
         },
         cue: {
-          vi: '👁️ Dấu hiệu: Hạt cơm tơi ráo mềm dẻo nguyên hạt, thịt cừu chín mềm rục rã tan ngay đầu lưỡi.',
-          ru: '👁️ Признак: Рассыпчатый блестящий рис и нежнейшее тающее во рту мясо.'
+          vi: '👁️ Dấu hiệu: Tiếng xèo xèo giòn rụm khi rưới dầu 230°C, hạt cơm bóng mượt tơi ráo quyện vị bơ Ghee.',
+          ru: '👁️ Признак: Характерное шипение масла, рассыпчатый глянцевый рис со сливочно-ореховым вкусом.'
         },
         warn: {
-          vi: '⚠️ Lưu ý: Không mở nắp vung kiểm tra trong suốt 30 phút ủ Đom để tránh thất thoát áp suất hơi.',
-          ru: '⚠️ Важно: Не открывать крышку в течение всех 30 минут томления.'
+          vi: '⚠️ Lưu ý: Chỉ đảo làm tơi lớp gạo phía trên, không xới tung lẫn xuống tầng thịt và cà rốt bên dưới.',
+          ru: '⚠️ Важно: Разрыхлять только верхний слой риса, не перемешивая с нижними слоями.'
         }
       }
     ],
     notes: [
       {
-        label: { vi: 'Bắt buộc lọc bỏ hạch bạch huyết trên đùi cừu', ru: 'Обязательная зачистка лимфоузлов на мясе' },
+        label: { vi: 'Quy tắc vàng kiểm soát hơi nước 2 nhịp (30 phút + 20 phút)', ru: 'Золотое правило контроля пара в два этапа (30 + 20 мин)' },
         text: {
-          vi: 'Dọc theo xương đùi sau của cừu có các cục hạch bạch huyết ẩn sâu trong thớ thịt. Nếu bỏ sót, khi nấu hạch sẽ vỡ ra tạo mùi hôi nồng nặc làm hỏng toàn bộ nồi Plov.',
-          ru: 'Вдоль бедренной кости задней ноги находятся лимфатические узлы. Если их не вырезать перед варкой, они придадут плову тяжелый неприятный запах.'
+          vi: 'Nhịp 1 (30 phút hầm rau thịt trước khi vào gạo): hạ lửa để hơi bốc tản nhẹ lượn lờ, không phun tia thẳng. Nhịp 2 (20 phút hấp gạo): hạ lửa tối đa để hơi chỉ thỉnh thoảng thoát nhẹ dưới mép vung.',
+          ru: 'Этап 1 (30 мин до закладки риса): пар выходит НЕ прямой струей, а только вьется. Этап 2 (20 мин с рисом): убавить огонь так, чтобы пар лишь иногда выходил из-под крышки.'
         }
       },
       {
-        label: { vi: 'Kỹ thuật nạp oxy cho nước luộc thịt', ru: 'Технология обогащения бульона кислородом' },
+        label: { vi: 'Tách biệt kỹ thuật nung dầu 220–230°C và bơ đun chảy', ru: 'Раздельное внесение прокаливаемого масла (220–230°C) и топленого масла' },
         text: {
-          vi: 'Trong quá trình luộc sơ thịt cừu, liên tục dùng muôi múc nước dùng lên cao rồi rót xuống. Thao tác này giúp oxy hòa tan, kết tủa bọt bẩn và giữ cho nước dùng trong vắt, ngọt thanh tự nhiên.',
-          ru: 'Во время варки мяса постоянно зачерпывайте кипящий бульон половником и переливайте струей с высоты — это насыщает его кислородом и делает кристально чистым.'
+          vi: 'Bơ đun chảy (40g/kg gạo) KHÔNG đun chung trong chảo dầu 230°C để tránh cháy khét bơ, mà được cho trực tiếp lên mặt cơm ngay sau khi dội hỗn hợp dầu nóng rồi mới đảo tơi.',
+          ru: 'Топленое сливочное масло не прокаливается вместе с растительными маслами при 220–230°C, а добавляется поверх риса сразу после поливки горячим маслом.'
         }
       },
       {
-        label: { vi: 'Bảo quản, hâm nóng & Món ăn kèm chuẩn vị', ru: 'Хранение, разогрев и традиции подачи' },
+        label: { vi: 'Tối ưu thời gian chuẩn bị trước', ru: 'Оптимизация времени приготовления' },
         text: {
-          vi: 'Bảo quản ngăn mát tủ lạnh (2–4°C) trong 2–3 ngày. Khi hâm nóng tuyệt đối không đảo trên chảo khô mà phải hấp cách thủy 10–15 phút để cơm mềm mọng trở lại. Bắt buộc ăn kèm sa-lát cà chua hành tây (Achichuk), bánh mì nướng sữa (Lepeshka) và trà xanh nóng không đường (Kok-chay).',
-          ru: 'Хранить в холодильнике 2–3 суток. Разогревать строго на пару (в мантоварке) 10–15 минут. Подавать с салатом Ачичук из помидоров и лука, тандырной лепешкой и горячим зеленым чаем без сахара.'
+          vi: 'Công đoạn hầm thịt 90 phút và lọc nước dùng (Mục 1) cùng công đoạn ngâm đậu gà qua đêm 9–10 tiếng có thể làm trước từ hôm trước để ngày nấu chính diễn ra nhanh gọn trong khoảng 1 tiếng.',
+          ru: 'Варку мяса (90 мин) и замачивание нута (9–10 часов) можно выполнить заранее за день до основного приготовления.'
         }
       }
     ]
@@ -503,6 +700,21 @@
     document.getElementById('colIng').textContent = getTxt(UI_TEXT.colIng);
     document.getElementById('colQty').textContent = getTxt(UI_TEXT.colQty);
     document.getElementById('colPrep').textContent = getTxt(UI_TEXT.colPrep);
+
+    // Gantt headers & legend
+    document.getElementById('uiGanttTitle').textContent = getTxt(UI_TEXT.ganttTitle);
+    var legArr = UI_TEXT.ganttLegend[lang] || UI_TEXT.ganttLegend.vi;
+    var legHtml = '';
+    for (var lg = 0; lg < legArr.length; lg++) {
+      legHtml += '<span>' + legArr[lg] + '</span>';
+    }
+    document.getElementById('ganttLegend').innerHTML = legHtml;
+    document.getElementById('gColStream').textContent = getTxt(UI_TEXT.gColStream);
+    document.getElementById('gColTime').textContent = getTxt(UI_TEXT.gColTime);
+    document.getElementById('gColHeat').textContent = getTxt(UI_TEXT.gColHeat);
+    document.getElementById('gColAction').textContent = getTxt(UI_TEXT.gColAction);
+    document.getElementById('gColCue').textContent = getTxt(UI_TEXT.gColCue);
+
     document.getElementById('uiStepsTitle').textContent = getTxt(UI_TEXT.stepsTitle);
     document.getElementById('uiNotesTitle').textContent = getTxt(UI_TEXT.notesTitle);
     document.getElementById('uiResetBtn').textContent = getTxt(UI_TEXT.resetBtn);
@@ -510,7 +722,7 @@
     document.getElementById('btnPrint').textContent = getTxt(UI_TEXT.printBtn);
     document.getElementById('kgDisplay').textContent = baseKg.toFixed(1);
 
-    var presets = [1.0, 2.0, 3.0, 5.0, 10.0];
+    var presets = [0.5, 1.0, 2.0, 3.0, 5.0];
     var presetsHtml = '';
     for (var j = 0; j < presets.length; j++) {
       var p = presets[j];
@@ -532,6 +744,21 @@
                  '</div>';
     }
     document.getElementById('ingTableBody').innerHTML = ingHtml;
+
+    // Render Gantt Rows (No colors, fire symbols only)
+    var ganttHtml = '';
+    for (var g = 0; g < RECIPE.gantt.length; g++) {
+      var gt = RECIPE.gantt[g];
+      ganttHtml += '<div class="gantt-row">' +
+                   '<div><div class="gantt-stream">' + getTxt(gt.stream) + '</div>' +
+                   '<div class="gantt-bar-wrap"><div class="gantt-bar-fill" style="left:' + gt.barLeft + '%; width:' + gt.barWidth + '%;"></div></div></div>' +
+                   '<div><span class="gantt-time">⏱️ ' + getTxt(gt.time) + '</span></div>' +
+                   '<div><div class="gantt-heat">' + getTxt(gt.heat) + '</div><span class="gantt-lid">' + getTxt(gt.lid) + '</span></div>' +
+                   '<div class="gantt-action">' + getTxt(gt.action) + '</div>' +
+                   '<div class="gantt-cue">👁️ ' + getTxt(gt.cue) + '</div>' +
+                   '</div>';
+    }
+    document.getElementById('ganttTableBody').innerHTML = ganttHtml;
 
     var stepsHtml = '';
     for (var n = 0; n < RECIPE.steps.length; n++) {
@@ -632,7 +859,7 @@
   }
 
   function copyList() {
-    var riceLabel = lang === 'ru' ? 'Рис круглый узбекский' : 'Gạo hạt tròn Uzbekistan';
+    var riceLabel = lang === 'ru' ? 'Рис' : 'Gạo';
     var header = getTxt(RECIPE.name) + ' (' + baseKg.toFixed(1) + ' kg ' + (lang === 'ru' ? 'риса' : 'gạo') + ')';
     var lines = ['- ' + riceLabel + ': ' + baseKg.toFixed(1) + ' kg'].concat(currentItems.map(function(i) {
       return '- ' + getTxt(i.name) + ': ' + fmt(i.val, i.dec) + ' ' + i.unit;
@@ -644,7 +871,7 @@
   }
 
   function copyFullRecipeForPrint() {
-    var riceLabel = lang === 'ru' ? 'Рис круглый узбекский' : 'Gạo hạt tròn Uzbekistan';
+    var riceLabel = lang === 'ru' ? 'Рис' : 'Gạo';
     var title = getTxt(RECIPE.name) + ' (' + baseKg.toFixed(1) + ' kg ' + (lang === 'ru' ? 'риса' : 'gạo') + ')';
     var ings = ['• ' + riceLabel + ': ' + baseKg.toFixed(1) + ' kg'].concat(currentItems.map(function(i) {
       return '• ' + getTxt(i.name) + ': ' + fmt(i.val, i.dec) + ' ' + i.unit + ' (' + getTxt(i.prep) + ')';
@@ -665,7 +892,7 @@
     var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
     if (isMobile) {
       document.getElementById('modalPrintTitle').textContent = lang === 'ru'
-        ? '🖨️ Печать / Сохранить в PDF на телефоне'
+        ? '🖨️ Печать / Сохранить в PDF на điện thoại'
         : '🖨️ In phiếu / Lưu PDF trên điện thoại';
       document.getElementById('modalPrintDesc').innerHTML = lang === 'ru'
         ? 'Нажмите <b>Открыть печать / PDF</b> ниже. Если вы открыли ссылку внутри Zalo/Messenger, нажмите меню <b>⋮ / Поделиться</b> в браузере и выберите <b>Открыть в Safari/Chrome</b> или <b>Печать</b>.'
