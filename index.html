@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Công thức và quy trình làm Cơm Plov Bukhara (Oshi Sofi)</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f1f5f9;
+      color: #1e293b;
+      padding: 16px 12px 48px;
+      line-height: 1.5;
+    }
+    .wrap { max-width: 960px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+      overflow: hidden;
+    }
+    .header {
+      padding: 20px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .header h1 { font-size: 20px; font-weight: 800; color: #0f172a; }
+
+    .controls-top { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .lang-group { display: flex; background: #f1f5f9; padding: 4px; border-radius: 10px; }
+    .lang-btn {
+      border: none;
+      background: transparent;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #64748b;
+      border-radius: 7px;
+      cursor: pointer;
+    }
+    .lang-btn.active { background: #fff; color: #2563eb; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .btn-print {
+      border: none;
+      background: #0f172a;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .slider-panel {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+      color: #fff;
+      padding: 24px;
+      border-radius: 16px;
+    }
+    .slider-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+    .slider-title { font-size: 12px; font-weight: 800; color: #fbbf24; text-transform: uppercase; }
+    .slider-desc { font-size: 13px; color: #cbd5e1; margin-top: 2px; }
+    .kg-display { font-size: 40px; font-weight: 900; color: #fbbf24; font-family: monospace; line-height: 1; }
+    .kg-unit { font-size: 18px; color: #e2e8f0; font-weight: 700; margin-left: 4px; }
+
+    input[type=range] {
+      width: 100%;
+      margin: 18px 0 12px;
+      height: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      accent-color: #f59e0b;
+    }
+    .presets { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.15); }
+    .preset-list { display: flex; flex-wrap: wrap; gap: 6px; }
+    .preset-btn {
+      background: rgba(255,255,255,0.14);
+      border: none;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 7px;
+      font-size: 12px;
+      font-family: monospace;
+      cursor: pointer;
+    }
+    .preset-btn.active { background: #fbbf24; color: #0f172a; font-weight: 800; }
+    .reset-link { background: none; border: none; color: #93c5fd; font-size: 12px; text-decoration: underline; cursor: pointer; }
+
+    .table-head-bar {
+      padding: 16px 20px;
+      background: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .table-head-bar h2 { font-size: 16px; font-weight: 800; color: #0f172a; }
+    .table-head-bar h2 .sub-italic { font-weight: 400; font-style: italic; font-size: 14px; color: #475569; }
+    .btn-copy {
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .div-grid-header, .div-grid-row {
+      display: grid;
+      grid-template-columns: 2.2fr 1.2fr 2.4fr;
+      align-items: center;
+      padding: 12px 20px;
+      border-bottom: 1px solid #e2e8f0;
+      gap: 10px;
+    }
+    .div-grid-header {
+      background: #f1f5f9;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #64748b;
+    }
+    .div-grid-row:hover { background: #f8fafc; }
+    @media (max-width: 640px) {
+      .div-grid-header, .div-grid-row { grid-template-columns: 1.6fr 1.1fr; padding: 12px 14px; }
+      .col-prep { grid-column: 1 / -1; font-size: 12px; color: #64748b; padding-top: 2px; }
+    }
+
+    .ing-title { font-weight: 700; font-size: 14px; color: #0f172a; }
+    .ing-tag { display: inline-block; font-size: 11px; background: #f1f5f9; color: #64748b; padding: 1px 7px; border-radius: 5px; margin-top: 3px; }
+    .val-cell { display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .scrub-box {
+      min-width: 76px;
+      text-align: center;
+      padding: 6px 10px;
+      background: #eff6ff;
+      border: 1.5px solid #bfdbfe;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 15px;
+      font-weight: 800;
+      color: #2563eb;
+      cursor: ns-resize;
+      user-select: none;
+      touch-action: none;
+    }
+    .scrub-box.active { background: #2563eb; color: #fff; border-color: #2563eb; transform: scale(1.06); }
+    .unit-txt { font-size: 13px; font-weight: 600; color: #64748b; width: 26px; }
+    .prep-txt { font-size: 13px; color: #475569; }
+
+    .section-box { padding: 20px; }
+    .section-box h2 { font-size: 16px; font-weight: 800; margin-bottom: 14px; color: #0f172a; }
+    .steps-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    @media (max-width: 720px) { .steps-grid { grid-template-columns: 1fr; } }
+    .step-item { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 16px; }
+    .step-item h3 { font-size: 12px; font-weight: 800; color: #2563eb; text-transform: uppercase; }
+    .step-badges { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 8px; }
+    .step-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      color: #334155;
+    }
+    .step-item p { font-size: 13px; color: #334155; }
+    .step-cue { font-size: 12px; color: #0f766e; font-weight: 600; margin-top: 6px; }
+    .step-warn { font-size: 12px; color: #b45309; font-weight: 600; margin-top: 4px; }
+
+    /* Notes Section */
+    .notes-list { display: flex; flex-direction: column; gap: 10px; }
+    .note-item {
+      background: #fffbeb;
+      border-left: 4px solid #f59e0b;
+      padding: 12px 16px;
+      border-radius: 0 10px 10px 0;
+      font-size: 13px;
+      color: #334155;
+    }
+    .note-item strong { color: #92400e; display: block; margin-bottom: 2px; font-size: 12px; text-transform: uppercase; }
+
+    /* Mobile Print Modal */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.75);
+      z-index: 9999;
+      padding: 16px;
+      overflow-y: auto;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-card {
+      background: #fff;
+      max-width: 520px;
+      width: 100%;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+    .modal-card h3 { font-size: 16px; font-weight: 800; color: #0f172a; margin-bottom: 8px; }
+    .modal-card p { font-size: 13px; color: #475569; margin-bottom: 14px; line-height: 1.5; }
+    .modal-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn-modal-primary {
+      flex: 1;
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-modal-close {
+      background: #f1f5f9;
+      color: #334155;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    @media print {
+      .no-print, .modal-backdrop { display: none !important; }
+      body { background: #fff !important; padding: 0 !important; color: #000 !important; }
+      .wrap { max-width: 100%; gap: 10px; }
+      .card { box-shadow: none !important; border: 1px solid #ccc !important; break-inside: avoid; }
+      .slider-panel { background: #f8fafc !important; color: #000 !important; border: 1px solid #ccc !important; padding: 14px; }
+      .slider-title, .kg-display, .kg-unit, .slider-desc { color: #000 !important; }
+      input[type=range], .presets { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="card header">
+    <div>
+      <h1 id="uiTitle">Cơm Plov Bukhara Cung Đình (Oshi Sofi)</h1>
+    </div>
+    <div class="controls-top no-print">
+      <div class="lang-group">
+        <button class="lang-btn active" id="btn-vi" onclick="setLang('vi')">VI</button>
+        <button class="lang-btn" id="btn-ru" onclick="setLang('ru')">RU</button>
+      </div>
+      <button class="btn-print" id="btnPrint" onclick="handlePrint()">🖨️ In phiếu</button>
+    </div>
+  </div>
+
+  <div class="slider-panel">
+    <div class="slider-top">
+      <div>
+        <div class="slider-title" id="uiSliderTitle">Khối lượng gạo hạt tròn Uzbekistan (Nguyên liệu gốc)</div>
+        <div class="slider-desc" id="uiSliderDesc">Kéo thanh trượt để tự động nhân chia toàn bộ định lượng theo tỷ lệ chuẩn (1 kg gạo = 10 phần ăn)</div>
+      </div>
+      <div>
+        <span class="kg-display" id="kgDisplay">2.0</span><span class="kg-unit">kg</span>
+      </div>
+    </div>
+    <input type="range" id="masterSlider" min="0.5" max="15.0" step="0.1" value="2.0">
+    <div class="presets no-print">
+      <div class="preset-list" id="presetList"></div>
+      <button class="reset-link" id="uiResetBtn" onclick="recalculateAll()">Đặt lại tỷ lệ gốc</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="table-head-bar">
+      <div>
+        <h2 id="uiTableTitle">Bảng định lượng nguyên liệu <span class="sub-italic">(Kéo chuột ở từng ô để thay đổi công thức tùy theo khẩu vị)</span></h2>
+      </div>
+      <button class="btn-copy no-print" id="btnCopy" onclick="copyList()">📋 Danh sách nguyên liệu</button>
+    </div>
+    <div class="div-grid-header">
+      <div id="colIng">Nguyên liệu</div>
+      <div style="text-align:center;" id="colQty">Định lượng (Kéo ↕)</div>
+      <div class="col-prep" id="colPrep">Quy cách sơ chế & Kỹ thuật</div>
+    </div>
+    <div id="ingTableBody"></div>
+  </div>
+
+  <div class="card section-box">
+    <h2 id="uiStepsTitle">Quy Trình Thực Hiện Chuẩn Hóa (4 Giai Đoạn)</h2>
+    <div class="steps-grid" id="stepsGrid"></div>
+  </div>
+
+  <div class="card section-box">
+    <h2 id="uiNotesTitle">Ghi chú & Lưu ý quan trọng</h2>
+    <div class="notes-list" id="notesList"></div>
+  </div>
+</div>
+
+<!-- Mobile Print Helper Modal -->
+<div class="modal-backdrop no-print" id="printModal" onclick="if(event.target===this) closePrintModal()">
+  <div class="modal-card">
+    <h3 id="modalPrintTitle">🖨️ Lưu PDF / In phiếu trên điện thoại</h3>
+    <p id="modalPrintDesc">Nếu trình duyệt trên điện thoại chưa tự mở bảng in, bạn có thể bấm nút <b>Mở hộp thoại In / Lưu PDF</b> bên dưới, hoặc bấm biểu tượng <b>Chia sẻ (Share) / Dấu 3 chấm (⋮)</b> trên thanh trình duyệt và chọn <b>In (Print)</b>.</p>
+    <div class="modal-actions">
+      <button class="btn-modal-primary" id="btnTriggerNativePrint" onclick="triggerNativePrint()">Mở hộp thoại In / Lưu PDF</button>
+      <button class="btn-modal-primary" style="background:#0f172a;" id="btnCopyFullRecipe" onclick="copyFullRecipeForPrint()">📋 Chép toàn bộ phiếu</button>
+      <button class="btn-modal-close" id="btnCloseModal" onclick="closePrintModal()">Đóng</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  var lang = 'vi';
+  var baseKg = 2.0;
+  var currentItems = [];
+  var scrubIdx = null;
+  var startY = 0;
+  var startVal = 0;
+
+  var UI_TEXT = {
+    title: { vi: 'Cơm Plov Bukhara Cung Đình (Oshi Sofi)', ru: 'Бухарский плов Оши-Софи (Диетический плов эмиров)' },
+    sliderTitle: { vi: 'Khối lượng gạo hạt tròn Uzbekistan (Nguyên liệu gốc)', ru: 'Вес круглого узбекского риса (Базовый продукт)' },
+    sliderDesc: { vi: 'Kéo thanh trượt để tự động nhân chia toàn bộ định lượng theo tỷ lệ chuẩn (1 kg gạo = 10 phần ăn)', ru: 'Перемещайте ползунок для пересчета всех компонентов (1 кг риса = 10 порций)' },
+    tableTitleMain: { vi: 'Bảng định lượng nguyên liệu ', ru: 'Bảng định lượng nguyên liệu ' },
+    tableTitleSub: { vi: '(Kéo chuột ở từng ô để thay đổi công thức tùy theo khẩu vị)', ru: '(Тяните числа в ячейках вверх/вниз для изменения рецепта по вкусу)' },
+    colIng: { vi: 'Nguyên liệu', ru: 'Ингредиент' },
+    colQty: { vi: 'Định lượng (Kéo ↕)', ru: 'Вес / Объем (↕)' },
+    colPrep: { vi: 'Quy cách sơ chế & Kỹ thuật', ru: 'Обработка и нарезка' },
+    stepsTitle: { vi: 'Quy Trình Thực Hiện Chuẩn Hóa (4 Giai Đoạn)', ru: 'Пошаговая технология (4 этапа)' },
+    notesTitle: { vi: 'Ghi chú & Lưu ý quan trọng', ru: 'Примечания и важные советы' },
+    resetBtn: { vi: 'Đặt lại tỷ lệ gốc', ru: 'Сбросить ручные правки' },
+    copyBtn: { vi: '📋 Danh sách nguyên liệu', ru: '📋 Список ингредиентов' },
+    printBtn: { vi: '🖨️ In phiếu', ru: '🖨️ Печать' }
+  };
+
+  var RECIPE = {
+    name: { vi: 'Cơm Plov Bukhara Cung Đình (Oshi Sofi)', ru: 'Бухарский плов Оши-Софи' },
+    items: [
+      { group: { vi: 'Đạm chính', ru: 'Основной белок' }, name: { vi: 'Thịt đùi cừu / bò (chân sau)', ru: 'Мякоть баранины / говядины (задняя нога)' }, perKg: 1000, step: 50, dec: 0, unit: 'g', prep: { vi: 'Lọc sạch hạch bạch huyết dọc xương, chặt miếng tảng 350–400g', ru: 'Вырезать лимфоузлы вдоль кости; нарубить кусками по 350–400 г' } },
+      { group: { vi: 'Rau củ ngọt', ru: 'Овощная база' }, name: { vi: 'Cà rốt vàng Uzbekistan', ru: 'Морковь желтая узбекская' }, perKg: 750, step: 50, dec: 0, unit: 'g', prep: { vi: 'Gọt vỏ, thái sợi chỉ thật mỏng 2–3 mm dài 5–6 cm', ru: 'Очистить, нарезать тонкой соломкой 2–3 мм длиной 5–6 см' } },
+      { group: { vi: 'Rau củ ngọt', ru: 'Овощная база' }, name: { vi: 'Cà rốt đỏ', ru: 'Морковь красная' }, perKg: 250, step: 25, dec: 0, unit: 'g', prep: { vi: 'Thái sợi chỉ mỏng đồng đều 2–3 mm tạo màu sắc', ru: 'Нарезать тонкой соломкой 2–3 мм для визуального контраста' } },
+      { group: { vi: 'Hương nền', ru: 'Ароматная база' }, name: { vi: 'Hành tây trắng / vàng', ru: 'Репчатый лук' }, perKg: 300, step: 25, dec: 0, unit: 'g', prep: { vi: 'Bổ đôi, thái lát cực mỏng (1 mm) để tan biến trong nước dùng', ru: 'Нашинковать максимально тонкими полукольцами (1 мм)' } },
+      { group: { vi: 'Hương quả khô', ru: 'Сухофрукты' }, name: { vi: 'Nho khô đen tự nhiên (Kishmish)', ru: 'Изюм черный узбекский (Кишмиш)' }, perKg: 100, step: 10, dec: 0, unit: 'g', prep: { vi: 'Nhặt cuống, ngâm nước ấm 15 phút rồi vớt ráo', ru: 'Перебрать, замочить на 15 мин в теплой воде и откинуть' } },
+      { group: { vi: 'Nước dùng', ru: 'Бульонная основа' }, name: { vi: 'Nước luộc thịt cừu đậm đặc', ru: 'Насыщенный мясной бульон' }, perKg: 350, step: 25, dec: 0, unit: 'ml', prep: { vi: 'Múc trực tiếp từ nồi luộc thịt đang sôi rót vào Kazan', ru: 'Зачерпнуть из сотейника с мясом и влить в казан кипящим' } },
+      { group: { vi: 'Chất béo nung', ru: 'Масляный финиш' }, name: { vi: 'Dầu hướng dương tinh luyện', ru: 'Подсолнечное масло высшего сорта' }, perKg: 200, step: 10, dec: 0, unit: 'ml', prep: { vi: 'Rót vào chảo nung đến khi bốc khói trắng mỏng (180–200°C)', ru: 'Прокалить на сковороде до легкого белого дымка (180–200°C)' } },
+      { group: { vi: 'Chất béo linh hồn', ru: 'Масляный финиш' }, name: { vi: 'Dầu Zighir (hạt lanh & 7 loại hạt)', ru: 'Масло Зигир (Смесь 7 масел: лен, кунжут)' }, perKg: 75, step: 5, dec: 0, unit: 'ml', prep: { vi: 'Hòa cùng dầu hướng dương khi nung để dậy hương quả hạch', ru: 'Влить в смесь масел на этапе прокаливания для орехового вкуса' } },
+      { group: { vi: 'Bí quyết hoàng gia', ru: 'Секрет. ингредиент' }, name: { vi: 'Tủy xương cô đặc (Kostnoye maslo)', ru: 'Костное масло / вытопленный костный мозг' }, perKg: 15, step: 2, dec: 0, unit: 'g', prep: { vi: 'Thả vào chảo dầu đang sôi cho tan chảy hoàn toàn', ru: 'Растопить в кипящей масляной смеси перед поливкой' } },
+      { group: { vi: 'Bí quyết hoàng gia', ru: 'Секрет. ингредиент' }, name: { vi: 'Bơ ghee tinh khiết (Toplyonoye)', ru: 'Топленое масло (Гхи)' }, perKg: 15, step: 2, dec: 0, unit: 'g', prep: { vi: 'Thả cùng tủy xương vào chảo dầu nung trước khi rưới', ru: 'Добавить в раскаленное масло для сливочного аромата' } },
+      { group: { vi: 'Gia vị linh hồn', ru: 'Душа плова' }, name: { vi: 'Thì là Ai Cập núi đá (Zira)', ru: 'Зира горная узбекская (Кумин)' }, perKg: 15, step: 1, dec: 0, unit: 'g', prep: { vi: 'Nghiền thô bằng cối đá ngay trước khi rắc vào thịt và nồi', ru: 'Слегка растереть в каменной ступке перед внесением' } },
+      { group: { vi: 'Gia vị điều vị', ru: 'Приправа' }, name: { vi: 'Muối biển hạt vừa (không i-ốt)', ru: 'Соль морская / каменная (без йода)' }, perKg: 28, step: 2, dec: 0, unit: 'g', prep: { vi: 'Chia 3 đợt: luộc thịt, luộc gạo và rắc lớp cà rốt', ru: 'Вносится дробно: в бульон мяса, воду для риса и в казан' } },
+      { group: { vi: 'Gia vị thảo mộc', ru: 'Пряности' }, name: { vi: 'Tiêu đen xay tươi', ru: 'Черный перец свежемолотый' }, perKg: 2.5, step: 0.5, dec: 1, unit: 'g', prep: { vi: 'Rắc trực tiếp vào nước luộc thịt để khử mùi và làm ấm tỳ vị', ru: 'Добавить в бульон при варке мяса' } }
+    ],
+    steps: [
+      {
+        title: { vi: 'Giai đoạn 1: Sơ chế & Luộc sơ thịt và gạo', ru: 'Этап 1: Зачистка и предварительное отваривание' },
+        badges: {
+          vi: ['🔥🔥🔥 Lửa lớn', '⏱️ 25 phút', '🍲 Mở vung'],
+          ru: ['🔥🔥🔥 Сильный огонь', '⏱️ 25 мин', '🍲 Без крышки']
+        },
+        desc: {
+          vi: 'Rạch dọc xương đùi cừu bóc sạch toàn bộ hạch bạch huyết, chặt tảng 350–400g. Đun sôi bùng nồi nước, thả thịt trực tiếp vào nước đang sôi để khóa protein, hớt bọt, nêm hành tây lát mỏng, muối, tiêu, Zira và liên tục múc nước rót từ trên cao xuống để nạp oxy trong 20–25 phút. Ở nồi khác, luộc gạo trong túi vải thưa với nước muối sôi trong 7–9 phút rồi vớt ra giá gỗ cho róc nước.',
+          ru: 'Вырезать лимфоузлы вдоль кости, нарубить мясо кусками 350–400 г. Опустить мясо строго в кипящую воду (запечатывание соков), снять пену, добавить лук, соль, перец, зиру и непрерывно переливать бульон струей с высоты для насыщения кислородом (20–25 мин). Отдельно отварить рис в холщовом мешке в подсоленной кипящей воде 7–9 мин и откинуть на деревянную решетку.'
+        },
+        cue: {
+          vi: '👁️ Dấu hiệu: Nước dùng trong veo óng mỡ vàng; thịt và gạo đều đạt độ chín dở 45–50% (lõi gạo còn gân cứng).',
+          ru: '👁️ Признак: Прозрачный золотистый бульон; мясо и рис доведены до полуготовности на 45–50%.'
+        },
+        warn: {
+          vi: '⚠️ Lưu ý: Tuyệt đối không thả thịt vào nước lạnh (sẽ làm tiết hết chất ngọt và ra nhiều bọt bẩn).',
+          ru: '⚠️ Важно: Категорически нельзя закладывать мясо в холодную воду.'
+        }
+      },
+      {
+        title: { vi: 'Giai đoạn 2: Xếp tầng & Kích hơi trong Kazan', ru: 'Этап 2: Закладка слоями в казан и запуск пара' },
+        badges: {
+          vi: ['🔥🔥🔥 Lửa lớn -> 🔥🔥 Lửa vừa', '⏱️ 10 phút', '🍲 Mở vung'],
+          ru: ['🔥🔥🔥 Сильный -> 🔥🔥 Средний', '⏱️ 10 мин', '🍲 Без крышки']
+        },
+        desc: {
+          vi: 'Lót 1 lớp cà rốt mỏng xuống đáy nồi Kazan sạch khô. Xếp toàn bộ thịt cừu lên trên, rắc hành tây thái mỏng, muối và Zira giã. Phủ kín toàn bộ cà rốt vàng/đỏ thái sợi lên trên, rải nho khô đen Kishmish đã ngâm nở. Múc nước luộc thịt đang sôi nóng rót vào nồi và bật lửa lớn để đẩy hơi tinh chất bốc ngược lên.',
+          ru: 'На дно чистого сухого казана выложить тонкий слой моркови, сверху уложить мясо, посыпать тонким луком, солью и зирой. Укрыть всей оставшейся желтой и красной морковью, распределить изюм. Влить кипящий мясной бульон и включить сильный огонь.'
+        },
+        cue: {
+          vi: '👁️ Dấu hiệu: Nước cốt dưới đáy sôi sùng sục, hơi nóng mang hương thịt và Zira cuộn bốc mạnh qua lớp cà rốt.',
+          ru: '👁️ Признак: Бурное кипение бульона на дне и интенсивный ароматный пар сквозь слой моркови.'
+        },
+        warn: {
+          vi: '⚠️ Lưu ý: Không đảo trộn các nguyên liệu; Oshi Sofi là món Plov hấp chín phân tầng.',
+          ru: '⚠️ Важно: Не перемешивать слои; Оши-Софи готовится строго слоями на пару.'
+        }
+      },
+      {
+        title: { vi: 'Giai đoạn 3: Vào gạo, chải xới & Rưới dầu nung', ru: 'Этап 3: Закладка риса, «расчесывание» и заливка маслом' },
+        badges: {
+          vi: ['🔥🔥 Lửa vừa (Chảo dầu: 🔥🔥🔥)', '⏱️ 15 phút', '🍲 Mở vung'],
+          ru: ['🔥🔥 Средний (Масло: 🔥🔥🔥)', '⏱️ 15 мин', '🍲 Без крышки']
+        },
+        desc: {
+          vi: 'Trút toàn bộ gạo đã róc nước lên trên lớp cà rốt, vuốt phẳng mặt. Dùng muôi Kaptgir chải xới nhẹ lớp gạo bề mặt từ rìa vào giữa cho tơi xốp. Đồng thời, đun sôi dầu hướng dương, dầu Zighir, tủy xương và bơ ghee trên chảo phụ đến khi bốc khói trắng mỏng (180–190°C) rồi rưới đều khắp mặt gạo.',
+          ru: 'Выложить стекший рис поверх моркови, разровнять. Аккуратно «расчесывать» верхний слой риса шумовкой от краев к центру. Параллельно прокалить на сковороде подсолнечное масло, зигир, костное масло и гхи до легкого дымка (180–190°C) и равномерно полить рис.'
+        },
+        cue: {
+          vi: '👁️ Dấu hiệu: Dầu sôi gặp gạo phát tiếng rít xèo xèo giòn tan, từng hạt gạo se bóng rực rỡ và dậy mùi hạt quả hạch.',
+          ru: '👁️ Признак: Громкое шипение при поливке, зерна покрываются глянцевой масляной глазурью.'
+        },
+        warn: {
+          vi: '⚠️ Lưu ý: Khi chải xới gạo tuyệt đối không để muôi chạm sâu xuống lớp cà rốt và thịt bên dưới.',
+          ru: '⚠️ Важно: При «расчесывании» риса не задевать шумовкой нижние слои моркови и мяса.'
+        }
+      },
+      {
+        title: { vi: 'Giai đoạn 4: Ủ chín hơi Đom & Trình bày phân tầng', ru: 'Этап 4: Томление под крышкой (Дам) и подача' },
+        badges: {
+          vi: ['🕯️ Lửa âm ỉ (nhỏ nhất)', '⏱️ 30 – 35 phút', '🥘 Đậy kín vung'],
+          ru: ['🕯️ Минимальный огонь', '⏱️ 30 – 35 мин', '🥘 Герметичная крышка']
+        },
+        desc: {
+          vi: 'Vun gạo thành hình mai rùa gọn vào tâm nồi, dùi 5–6 lỗ thông hơi xuống đáy. Đậy vung Kazan thật kín, hạ lửa nhỏ nhất ủ trong 30–35 phút. Khi mở vung, gạt lớp cơm ra đĩa lớn (Lyagan), phủ lớp cà rốt nho khô lên trên, thái lát thịt cừu xếp lên đỉnh và rưới nước cốt đáy nồi.',
+          ru: 'Собрать рис горкой, сделать несколько отверстий до дна. Плотно закрыть крышкой и томить на минимальном огне 30–35 минут. При подаче выложить на ляган слоями: сначала рис, сверху сладкую морковь с изюмом, на вершину — нарезанное ломтиками мясо.'
+        },
+        cue: {
+          vi: '👁️ Dấu hiệu: Hạt cơm tơi ráo mềm dẻo nguyên hạt, thịt cừu chín mềm rục rã tan ngay đầu lưỡi.',
+          ru: '👁️ Признак: Рассыпчатый блестящий рис и нежнейшее тающее во рту мясо.'
+        },
+        warn: {
+          vi: '⚠️ Lưu ý: Không mở nắp vung kiểm tra trong suốt 30 phút ủ Đom để tránh thất thoát áp suất hơi.',
+          ru: '⚠️ Важно: Не открывать крышку в течение всех 30 минут томления.'
+        }
+      }
+    ],
+    notes: [
+      {
+        label: { vi: 'Bắt buộc lọc bỏ hạch bạch huyết trên đùi cừu', ru: 'Обязательная зачистка лимфоузлов на мясе' },
+        text: {
+          vi: 'Dọc theo xương đùi sau của cừu có các cục hạch bạch huyết ẩn sâu trong thớ thịt. Nếu bỏ sót, khi nấu hạch sẽ vỡ ra tạo mùi hôi nồng nặc làm hỏng toàn bộ nồi Plov.',
+          ru: 'Вдоль бедренной кости задней ноги находятся лимфатические узлы. Если их не вырезать перед варкой, они придадут плову тяжелый неприятный запах.'
+        }
+      },
+      {
+        label: { vi: 'Kỹ thuật nạp oxy cho nước luộc thịt', ru: 'Технология обогащения бульона кислородом' },
+        text: {
+          vi: 'Trong quá trình luộc sơ thịt cừu, liên tục dùng muôi múc nước dùng lên cao rồi rót xuống. Thao tác này giúp oxy hòa tan, kết tủa bọt bẩn và giữ cho nước dùng trong vắt, ngọt thanh tự nhiên.',
+          ru: 'Во время варки мяса постоянно зачерпывайте кипящий бульон половником и переливайте струей с высоты — это насыщает его кислородом и делает кристально чистым.'
+        }
+      },
+      {
+        label: { vi: 'Bảo quản, hâm nóng & Món ăn kèm chuẩn vị', ru: 'Хранение, разогрев и традиции подачи' },
+        text: {
+          vi: 'Bảo quản ngăn mát tủ lạnh (2–4°C) trong 2–3 ngày. Khi hâm nóng tuyệt đối không đảo trên chảo khô mà phải hấp cách thủy 10–15 phút để cơm mềm mọng trở lại. Bắt buộc ăn kèm sa-lát cà chua hành tây (Achichuk), bánh mì nướng sữa (Lepeshka) và trà xanh nóng không đường (Kok-chay).',
+          ru: 'Хранить в холодильнике 2–3 суток. Разогревать строго на пару (в мантоварке) 10–15 минут. Подавать с салатом Ачичук из помидоров и лука, тандырной лепешкой и горячим зеленым чаем без сахара.'
+        }
+      }
+    ]
+  };
+
+  function getTxt(obj) {
+    if (!obj) return '';
+    return obj[lang] || obj.vi;
+  }
+
+  function fmt(val, dec) {
+    return dec > 0 ? val.toFixed(dec) : Math.round(val).toString();
+  }
+
+  function setLang(newLang) {
+    lang = newLang;
+    document.getElementById('btn-vi').classList.remove('active');
+    document.getElementById('btn-ru').classList.remove('active');
+    document.getElementById('btn-' + newLang).classList.add('active');
+    renderAll();
+  }
+
+  function recalculateAll() {
+    currentItems = RECIPE.items.map(function(item) {
+      return {
+        group: item.group,
+        name: item.name,
+        perKg: item.perKg,
+        step: item.step,
+        dec: item.dec,
+        unit: item.unit,
+        prep: item.prep,
+        val: item.perKg * baseKg
+      };
+    });
+    renderAll();
+  }
+
+  function renderAll() {
+    document.getElementById('uiTitle').textContent = getTxt(UI_TEXT.title);
+    document.getElementById('uiSliderTitle').textContent = getTxt(UI_TEXT.sliderTitle);
+    document.getElementById('uiSliderDesc').textContent = getTxt(UI_TEXT.sliderDesc);
+    var tblMain = lang === 'ru' ? 'Таблица ингредиентов ' : 'Bảng định lượng nguyên liệu ';
+    document.getElementById('uiTableTitle').innerHTML = tblMain + '<span class="sub-italic">' + getTxt(UI_TEXT.tableTitleSub) + '</span>';
+    document.getElementById('colIng').textContent = getTxt(UI_TEXT.colIng);
+    document.getElementById('colQty').textContent = getTxt(UI_TEXT.colQty);
+    document.getElementById('colPrep').textContent = getTxt(UI_TEXT.colPrep);
+    document.getElementById('uiStepsTitle').textContent = getTxt(UI_TEXT.stepsTitle);
+    document.getElementById('uiNotesTitle').textContent = getTxt(UI_TEXT.notesTitle);
+    document.getElementById('uiResetBtn').textContent = getTxt(UI_TEXT.resetBtn);
+    document.getElementById('btnCopy').textContent = getTxt(UI_TEXT.copyBtn);
+    document.getElementById('btnPrint').textContent = getTxt(UI_TEXT.printBtn);
+    document.getElementById('kgDisplay').textContent = baseKg.toFixed(1);
+
+    var presets = [1.0, 2.0, 3.0, 5.0, 10.0];
+    var presetsHtml = '';
+    for (var j = 0; j < presets.length; j++) {
+      var p = presets[j];
+      var pAct = (Math.abs(baseKg - p) < 0.05) ? 'active' : '';
+      presetsHtml += '<button class="preset-btn ' + pAct + '" onclick="setKg(' + p + ')">' + p.toFixed(1) + ' kg</button>';
+    }
+    document.getElementById('presetList').innerHTML = presetsHtml;
+
+    var ingHtml = '';
+    for (var m = 0; m < currentItems.length; m++) {
+      var item = currentItems[m];
+      ingHtml += '<div class="div-grid-row">' +
+                 '<div><div class="ing-title">' + getTxt(item.name) + '</div><span class="ing-tag">' + getTxt(item.group) + '</span></div>' +
+                 '<div class="val-cell">' +
+                 '<div class="scrub-box" id="scrub-' + m + '" onmousedown="startScrub(event, ' + m + ')" ontouchstart="startScrub(event, ' + m + ')" onwheel="wheelScrub(event, ' + m + ')">' + fmt(item.val, item.dec) + '</div>' +
+                 '<span class="unit-txt">' + item.unit + '</span>' +
+                 '</div>' +
+                 '<div class="col-prep prep-txt">' + getTxt(item.prep) + '</div>' +
+                 '</div>';
+    }
+    document.getElementById('ingTableBody').innerHTML = ingHtml;
+
+    var stepsHtml = '';
+    for (var n = 0; n < RECIPE.steps.length; n++) {
+      var s = RECIPE.steps[n];
+      var bList = s.badges[lang] || s.badges.vi;
+      var badgesHtml = '<div class="step-badges">';
+      for (var b = 0; b < bList.length; b++) {
+        badgesHtml += '<span class="step-badge">' + bList[b] + '</span>';
+      }
+      badgesHtml += '</div>';
+
+      stepsHtml += '<div class="step-item">' +
+                   '<h3>' + getTxt(s.title) + '</h3>' +
+                   badgesHtml +
+                   '<p>' + getTxt(s.desc) + '</p>' +
+                   '<div class="step-cue">' + getTxt(s.cue) + '</div>' +
+                   '<div class="step-warn">' + getTxt(s.warn) + '</div>' +
+                   '</div>';
+    }
+    document.getElementById('stepsGrid').innerHTML = stepsHtml;
+
+    var notesHtml = '';
+    for (var k = 0; k < RECIPE.notes.length; k++) {
+      var nt = RECIPE.notes[k];
+      notesHtml += '<div class="note-item"><strong>' + getTxt(nt.label) + '</strong>' + getTxt(nt.text) + '</div>';
+    }
+    document.getElementById('notesList').innerHTML = notesHtml;
+  }
+
+  function setKg(val) {
+    baseKg = val;
+    document.getElementById('masterSlider').value = val;
+    recalculateAll();
+  }
+
+  document.getElementById('masterSlider').addEventListener('input', function(e) {
+    baseKg = parseFloat(e.target.value);
+    recalculateAll();
+  });
+
+  function startScrub(e, idx) {
+    if (e.cancelable) e.preventDefault();
+    scrubIdx = idx;
+    startY = e.touches ? e.touches[0].clientY : e.clientY;
+    startVal = currentItems[idx].val;
+    document.getElementById('scrub-' + idx).classList.add('active');
+    document.body.style.cursor = 'ns-resize';
+  }
+
+  function onScrub(e) {
+    if (scrubIdx === null) return;
+    if (e.cancelable) e.preventDefault();
+    var curY = e.touches ? e.touches[0].clientY : e.clientY;
+    var item = currentItems[scrubIdx];
+    var steps = Math.round((startY - curY) / 6);
+    item.val = Math.max(0, startVal + steps * item.step);
+    document.getElementById('scrub-' + scrubIdx).textContent = fmt(item.val, item.dec);
+  }
+
+  function endScrub() {
+    if (scrubIdx === null) return;
+    var el = document.getElementById('scrub-' + scrubIdx);
+    if (el) el.classList.remove('active');
+    scrubIdx = null;
+    document.body.style.cursor = 'default';
+  }
+
+  function wheelScrub(e, idx) {
+    e.preventDefault();
+    var item = currentItems[idx];
+    item.val = Math.max(0, item.val + (e.deltaY < 0 ? item.step : -item.step));
+    document.getElementById('scrub-' + idx).textContent = fmt(item.val, item.dec);
+  }
+
+  window.addEventListener('mousemove', onScrub);
+  window.addEventListener('touchmove', onScrub, { passive: false });
+  window.addEventListener('mouseup', endScrub);
+  window.addEventListener('touchend', endScrub);
+
+  function copyString(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).catch(function() { fallbackCopy(text); });
+    } else {
+      fallbackCopy(text);
+    }
+  }
+
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+
+  function copyList() {
+    var riceLabel = lang === 'ru' ? 'Рис круглый узбекский' : 'Gạo hạt tròn Uzbekistan';
+    var header = getTxt(RECIPE.name) + ' (' + baseKg.toFixed(1) + ' kg ' + (lang === 'ru' ? 'риса' : 'gạo') + ')';
+    var lines = ['- ' + riceLabel + ': ' + baseKg.toFixed(1) + ' kg'].concat(currentItems.map(function(i) {
+      return '- ' + getTxt(i.name) + ': ' + fmt(i.val, i.dec) + ' ' + i.unit;
+    }));
+    copyString(header + '\n' + lines.join('\n'));
+    var btn = document.getElementById('btnCopy');
+    btn.textContent = lang === 'ru' ? '✅ Скопировано!' : '✅ Đã chép danh sách!';
+    setTimeout(function() { btn.textContent = getTxt(UI_TEXT.copyBtn); }, 2000);
+  }
+
+  function copyFullRecipeForPrint() {
+    var riceLabel = lang === 'ru' ? 'Рис круглый узбекский' : 'Gạo hạt tròn Uzbekistan';
+    var title = getTxt(RECIPE.name) + ' (' + baseKg.toFixed(1) + ' kg ' + (lang === 'ru' ? 'риса' : 'gạo') + ')';
+    var ings = ['• ' + riceLabel + ': ' + baseKg.toFixed(1) + ' kg'].concat(currentItems.map(function(i) {
+      return '• ' + getTxt(i.name) + ': ' + fmt(i.val, i.dec) + ' ' + i.unit + ' (' + getTxt(i.prep) + ')';
+    })).join('\n');
+    var steps = RECIPE.steps.map(function(s) {
+      return getTxt(s.title) + ' [' + (s.badges[lang] || s.badges.vi).join(' | ') + ']\n' + getTxt(s.desc) + '\n' + getTxt(s.cue) + '\n' + getTxt(s.warn);
+    }).join('\n\n');
+    copyString(title + '\n\n--- NGUYÊN LIỆU / ИНГРЕДИЕНТЫ ---\n' + ings + '\n\n--- QUY TRÌNH / ТЕХНОЛОГИЯ ---\n' + steps);
+    var btn = document.getElementById('btnCopyFullRecipe');
+    btn.textContent = lang === 'ru' ? '✅ Скопировано!' : '✅ Đã chép toàn bộ!';
+    setTimeout(function() {
+      btn.textContent = lang === 'ru' ? '📋 Скопировать весь рецепт' : '📋 Chép toàn bộ phiếu';
+    }, 2000);
+  }
+
+  function handlePrint() {
+    var ua = navigator.userAgent || '';
+    var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+    if (isMobile) {
+      document.getElementById('modalPrintTitle').textContent = lang === 'ru'
+        ? '🖨️ Печать / Сохранить в PDF на телефоне'
+        : '🖨️ In phiếu / Lưu PDF trên điện thoại';
+      document.getElementById('modalPrintDesc').innerHTML = lang === 'ru'
+        ? 'Нажмите <b>Открыть печать / PDF</b> ниже. Если вы открыли ссылку внутри Zalo/Messenger, нажмите меню <b>⋮ / Поделиться</b> в браузере и выберите <b>Открыть в Safari/Chrome</b> или <b>Печать</b>.'
+        : 'Bấm nút <b>Mở hộp thoại In / Lưu PDF</b> bên dưới. Nếu đang mở link trong Zalo/Messenger, hãy bấm biểu tượng <b>Chia sẻ / Dấu 3 chấm (⋮)</b> và chọn <b>Mở bằng Safari/Chrome</b> hoặc <b>In (Print)</b>.';
+      document.getElementById('btnTriggerNativePrint').textContent = lang === 'ru' ? 'Открыть печать / PDF' : 'Mở hộp thoại In / Lưu PDF';
+      document.getElementById('btnCopyFullRecipe').textContent = lang === 'ru' ? '📋 Скопировать весь рецепт' : '📋 Chép toàn bộ phiếu';
+      document.getElementById('btnCloseModal').textContent = lang === 'ru' ? 'Закрыть' : 'Đóng';
+      document.getElementById('printModal').classList.add('open');
+    } else {
+      window.print();
+    }
+  }
+
+  function triggerNativePrint() {
+    closePrintModal();
+    setTimeout(function() {
+      window.print();
+    }, 250);
+  }
+
+  function closePrintModal() {
+    document.getElementById('printModal').classList.remove('open');
+  }
+
+  recalculateAll();
+</script>
+</body>
+</html>
